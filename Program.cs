@@ -84,6 +84,7 @@ void MostrarMenu()
             case 7:
                 Console.Clear();
                 Console.WriteLine("Mostrar Procedimiento completo");
+                Opcion7();
                 break;
             case 8:
                 Console.Clear();
@@ -113,6 +114,7 @@ void MostrarMenu()
     catch (Exception ex)
     {
         Console.WriteLine(ex.ToString());
+        MostrarMenu();
     }
 }
 
@@ -331,14 +333,57 @@ void Opcion6()
 {
     try
     {
-        Paso4pt1();
+        if(ExisteLlave && ExisteMsjClaro)
+        {
+            Paso4pt();
+            //imprimirPaso4();
+            ImprimirCifrado();
 
+            Console.Write("Presiona <Enter> para regresar al menú... ");
+            if (Console.ReadKey().Key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                MostrarMenu();
+            }
+        }
+        else
+        {
+            throw new Exception("Falta ingresar datos..");
+        }
+        
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
         Console.Write("Presiona <Enter> para regresar al menú... ");
         if (Console.ReadKey().Key == ConsoleKey.Enter)
         {
-            Console.Clear();
             MostrarMenu();
         }
+    }
+}
+
+void Opcion7()
+{
+    try
+    {
+        if (ExisteLlave && ExisteMsjClaro)
+        {
+            Paso4pt();
+            imprimirPaso4();
+
+            Console.Write("Presiona <Enter> para regresar al menú... ");
+            if (Console.ReadKey().Key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                MostrarMenu();
+            }
+        }
+        else
+        {
+            throw new Exception("Falta ingresar datos..");
+        }
+
     }
     catch (Exception ex)
     {
@@ -372,17 +417,6 @@ void Opcion10()
         Console.WriteLine(ex.ToString());
     }
 }
-/*
-
-Console.WriteLine("Ingrese la llave:");
-Console.Write("\n");
-Llave = Console.ReadLine();
-Console.Write("\n");
-char[] ch_Llave = Llave.ToCharArray();
-LargoLlave = ch_Llave.Length;
-
-Console.WriteLine("La llave es: " + Llave + "\nTiene una longitud de: " + LargoLlave.ToString());
-*/
 
 // Metodos auxiliares
 
@@ -455,13 +489,6 @@ void DevolverArreglosEquivalenciaLlave(string Cadena)
     }
 }
 
-//Imprime el mensaje claro
-//Nota: Funciona solo para mensaje claro 
-void DevolverArregloMensajeClaro()
-{
-    ImprimirArregloChar(GlobalData.arrayMensajeClaroOriginal2);
-}
-
 //recibe un caracter, lo busca en el alfabeto y devuelve su posicion (equivalencia)
 // Nota: deberia funcionar tanto para mensaje claro como para la llave
 int DevolverIndiceAlfabeto(char charLetra)
@@ -490,6 +517,37 @@ int DevolverIndiceAlfabeto(char charLetra)
     }
         
     return (intValor);
+}
+
+//recibe un numero, lo busca en el alfabeto y devuelve su letra en la posicion (equivalencia)
+// Nota: deberia funcionar tanto para mensaje claro como para la llave
+string DevolverLetra(int intIndice)
+{
+    string charLetra = "";
+
+    if (EsEnEspañol)
+    {
+        for (int i = 0; i < AlfabetoEsp.Length; i++)
+        {
+            if (intIndice == i)
+            {
+                charLetra = AlfabetoEsp[i].ToString();
+                break;
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < AlfabetoIngles.Length; i++)
+        {
+            if (intIndice == i)
+            {
+                charLetra = AlfabetoIngles[i].ToString();
+                break;
+            }
+        }
+    }
+    return (charLetra);
 }
 
 //Imprime el arreglo que le mandemos (Funciona de momento solo para mensaje claro)
@@ -578,7 +636,7 @@ void ImprimirArregloChar(char[] Arreglo)
     Console.WriteLine(l1 + "\t]\n" + l2 + "\t]\n" + l3 + "\t]\n");
 }
 
-void Paso4pt1()
+void Paso4pt()
 {
     //multiplico la matriz 3x3 por m1
     int a1 = 0, a2= 0, a3 = 0;
@@ -610,9 +668,109 @@ void Paso4pt1()
         }
     }
 
-    Console.WriteLine(a1.ToString());
-    Console.WriteLine(a2.ToString());
-    Console.WriteLine(a3.ToString());
+    int[] arrayMultideM11 = new [] { a1, a2, a3 };
+    GlobalData.arrayMultideM1 = arrayMultideM11;
+
+    //multiplico la matriz 3x3 por m2
+    int b1 = 0, b2 = 0, b3 = 0;
+
+    for (int i = 0; i < GlobalData.arrayLlaveConvertida2.Length; i++)
+    {
+        if (i == 0)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                b1 = b1 + (GlobalData.arrayMensajeClaroConvertido[j] * GlobalData.arrayLlaveConvertida2[j]);
+            }
+        }
+
+        if (i == 1)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                b2 = b2 + (GlobalData.arrayMensajeClaroConvertido[j + 3] * GlobalData.arrayLlaveConvertida2[j]);
+            }
+        }
+
+        if (i == 2)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                b3 = b3 + (GlobalData.arrayMensajeClaroConvertido[j + 6] * GlobalData.arrayLlaveConvertida2[j]);
+            }
+        }
+    }
+    int[] arrayMultideM22 = new[] { b1, b2, b3 };
+    GlobalData.arrayMultideM2 = arrayMultideM22;
+}
+
+void imprimirPaso4()
+{
+    Console.WriteLine("La siguiente matriz representa las sumatorias de la multiplicacion por M1:\n");
+    ImprimirArreglo3x1(GlobalData.arrayMultideM1);
+    Console.WriteLine("La siguiente matriz representa las sumatorias de la multiplicacion por M2:\n");
+    ImprimirArreglo3x1(GlobalData.arrayMultideM2);
+    int cantaidadDeLetras;
+    if (EsEnEspañol)
+    {
+        cantaidadDeLetras = 27;
+    }
+    else
+    {
+        cantaidadDeLetras = 26;
+    }
+
+    //Realizando el mod
+    int[] arrayFinal1 = new int[3];
+    int[] arrayFinal2 = new int[3];
+    for (int i = 0; i < 3; i++)
+    {
+        arrayFinal1[i] = GlobalData.arrayMultideM1[i] % cantaidadDeLetras;
+    }
+    for (int i = 0; i < 3; i++)
+    {
+        arrayFinal2[i] = GlobalData.arrayMultideM2[i] % cantaidadDeLetras;
+    }
+
+    GlobalData.arrayEquivalenciaFinal1 = arrayFinal1; //guardo en variables globales
+    GlobalData.arrayEquivalenciaFinal2 = arrayFinal2; //guardo en variables globales
+    ImprimirCifrado();
+    /*
+    Console.WriteLine("La siguiente matriz representa el resultado final:\n");
+    ImprimirArreglo3x1(arrayFinal1);
+    ImprimirArreglo3x1(arrayFinal2);
+    
+    string strCodigo = "";
+    Console.WriteLine("El codigo es el siguiente:\n");
+    foreach(int i in arrayFinal1)
+    {
+        string varlor_i = DevolverLetra(i);
+        strCodigo = strCodigo + varlor_i;
+    }
+    foreach (int i in arrayFinal2)
+    {
+        string varlor_i = DevolverLetra(i);
+        strCodigo = strCodigo + varlor_i;
+    }
+    Console.WriteLine(strCodigo);*/
+}
+
+void ImprimirCifrado()
+{
+    string strCodigo = "";
+    
+    foreach (int i in GlobalData.arrayEquivalenciaFinal1)
+    {
+        string varlor_i = DevolverLetra(i);
+        strCodigo = strCodigo + varlor_i;
+    }
+    foreach (int i in GlobalData.arrayEquivalenciaFinal2)
+    {
+        string varlor_i = DevolverLetra(i);
+        strCodigo = strCodigo + varlor_i;
+    }
+    Console.WriteLine("El codigo es el siguiente:\n");
+    Console.WriteLine(strCodigo);
 }
 
 //Encabezado que se muestra a lo largo del programa para dar informacion del idioma actual
@@ -636,11 +794,14 @@ void MostrarIdioma()
 //Datos globales en los arreglos
 public static class GlobalData
 {
-    public static char[] arrayMensajeClaroOriginal2;
-    public static int[] arrayMensajeClaroConvertido;
-    public static char[] arrayLlaveOriginal;
-    public static char[] arrayLlaveOriginal2;
-    public static int[] arrayLlaveConvertida1;
-    public static int[] arrayLlaveConvertida2;
-    public static int[,] matrizcifrado;
+    public static char[] arrayMensajeClaroOriginal2;    //arreglo de chars del mensaje claro
+    public static int[] arrayMensajeClaroConvertido;    //arreglo convertido a numeros del mensaje claro   
+    public static char[] arrayLlaveOriginal;            //pt1 del arreglo de chars de la llave
+    public static char[] arrayLlaveOriginal2;           //pt2 del arreglo de chars de la llave
+    public static int[] arrayLlaveConvertida1;          //pt1 del arreglo de enteros de la llave
+    public static int[] arrayLlaveConvertida2;          //pt2 del arreglo de enteros de la llave
+    public static int[] arrayMultideM1;                //sumatoria de la multiplicacion de M1 * K
+    public static int[] arrayMultideM2;                //sumatoria de la multiplicacion de M2 * K
+    public static int[] arrayEquivalenciaFinal1, arrayEquivalenciaFinal2;
+    public static char[] arrayResultadoFinal1, arrayResultadoFinal2;
 };
