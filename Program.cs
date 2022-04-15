@@ -42,7 +42,8 @@ void MostrarMenu()
         Console.WriteLine("8.- Iniciar version sencilla");
         Console.WriteLine("9.- Iniciar version detallada");
         Console.WriteLine("9.- Borrar datos almacenados");
-        Console.WriteLine("10.- Salir");
+        Console.WriteLine("10.- Precargar ejemplo");
+        Console.WriteLine("11.- Salir");
         Console.WriteLine("Elige una de las opciones");
         int opcion = Convert.ToInt32(Console.ReadLine());
 
@@ -78,6 +79,7 @@ void MostrarMenu()
             case 6:
                 Console.Clear();
                 Console.WriteLine("Mostrar Resultado");
+                Opcion6();
                 break;
             case 7:
                 Console.Clear();
@@ -92,6 +94,11 @@ void MostrarMenu()
                 Console.WriteLine("Iniciar version detallada");
                 break;
             case 10:
+                Console.Clear();
+                Console.WriteLine("Precargando ejemplo: \nMensaje:guadalupe \nLlave: laredo");
+                Opcion10();
+                break;
+            case 11:
                 Console.Clear();
                 Console.WriteLine("Has elegido salir de la aplicación");
                 salir = true;
@@ -324,8 +331,16 @@ void Opcion6()
 {
     try
     {
+        Paso4pt1();
 
-    }catch (Exception ex)
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            Console.Clear();
+            MostrarMenu();
+        }
+    }
+    catch (Exception ex)
     {
         Console.WriteLine(ex.ToString());
         Console.Write("Presiona <Enter> para regresar al menú... ");
@@ -333,6 +348,28 @@ void Opcion6()
         {
             MostrarMenu();
         }
+    }
+}
+
+void Opcion10()
+{
+    try
+    {
+        bool ExisteMsjClaro = true;
+        bool ExisteLlave = true;
+        DevolverArregloEquivalencia("guadalupe"); //guarda y convierte el arreglo
+        DevolverArreglosEquivalenciaLlave("laredo"); //guarda y convierte el arreglo
+
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            Console.Clear();
+            MostrarMenu();
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
     }
 }
 /*
@@ -541,6 +578,43 @@ void ImprimirArregloChar(char[] Arreglo)
     Console.WriteLine(l1 + "\t]\n" + l2 + "\t]\n" + l3 + "\t]\n");
 }
 
+void Paso4pt1()
+{
+    //multiplico la matriz 3x3 por m1
+    int a1 = 0, a2= 0, a3 = 0;
+    
+    for (int i = 0; i < GlobalData.arrayLlaveConvertida1.Length; i++)
+    {
+        if (i == 0)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                a1 = a1 + (GlobalData.arrayMensajeClaroConvertido[j] * GlobalData.arrayLlaveConvertida1[j]);
+            }
+        }
+
+        if (i == 1)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                a2 = a2 + (GlobalData.arrayMensajeClaroConvertido[j+3] * GlobalData.arrayLlaveConvertida1[j]);
+            }
+        }
+
+        if (i == 2)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                a3 = a3 + (GlobalData.arrayMensajeClaroConvertido[j+6] * GlobalData.arrayLlaveConvertida1[j]);
+            }
+        }
+    }
+
+    Console.WriteLine(a1.ToString());
+    Console.WriteLine(a2.ToString());
+    Console.WriteLine(a3.ToString());
+}
+
 //Encabezado que se muestra a lo largo del programa para dar informacion del idioma actual
 void MostrarIdioma()
 {
@@ -568,4 +642,5 @@ public static class GlobalData
     public static char[] arrayLlaveOriginal2;
     public static int[] arrayLlaveConvertida1;
     public static int[] arrayLlaveConvertida2;
+    public static int[,] matrizcifrado;
 };
