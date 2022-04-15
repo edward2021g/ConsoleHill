@@ -86,6 +86,7 @@ void MostrarMenu()
             case 8:
                 Console.Clear();
                 Console.WriteLine("Iniciar version sencilla");
+                Opcion8();
                 break;
             case 9:
                 Console.Clear();
@@ -145,14 +146,16 @@ void Opcion1()
                 Console.Clear();
                 EsEnEspañol = true;
                 Console.WriteLine("Idioma Español");
-                MostrarMenu();
+                BorrarDatos(); //borra los datos al cambiar de idioma
+                //MostrarMenu();
                 break;
 
             case 2:
                 Console.Clear();
                 EsEnEspañol = false;
                 Console.WriteLine("Idioma Ingles");
-                MostrarMenu();
+                BorrarDatos(); //borra los datos al cambiar de idioma
+                //MostrarMenu();
                 break;
 
             case 3:
@@ -165,9 +168,22 @@ void Opcion1()
                 Console.WriteLine("Elige una opcion entre 1 y 3");
                 break;
         }
-    }catch (Exception ex)
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            Console.Clear();
+            MostrarMenu();
+        }
+    }
+    catch (Exception ex)
     {
         Console.WriteLine(ex.ToString());
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            Console.Clear();
+            MostrarMenu();
+        }
     }
 }
 
@@ -406,16 +422,100 @@ void Opcion7()
     }
 }
 
+void Opcion8()
+{
+    try
+    {
+        if (ExisteLlave && ExisteMsjClaro)
+        {
+            MostrarIdioma();
+            Paso4pt();
+            //imprimirPaso4();
+            ImprimirCifrado();
+
+            Console.Write("Presiona <Enter> para regresar al menú... ");
+            if (Console.ReadKey().Key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                MostrarMenu();
+            }
+        }
+        else
+        {
+            MostrarIdioma();
+
+            Console.WriteLine("Ingresar Mensaje claro: ");
+            MsjClaro = Console.ReadLine();
+            if (MsjClaro == null || MsjClaro == "")
+            {
+                throw new Exception("Ingrese un mensaje valido");
+            }
+            else if (MsjClaro.Length != 9)
+            {
+                throw new Exception("Ingrese un mensaje con extension valida");
+            }
+            //Console.WriteLine("El mensaje claro es el siguiente:\n");
+
+            DevolverArregloEquivalencia(MsjClaro); //guarda y convierte el arreglo
+            //ImprimirArregloChar(GlobalData.arrayMensajeClaroOriginal2);
+
+            //Console.WriteLine("El mensaje claro convertido es el siguiente:\n");
+            //ImprimirArreglo(GlobalData.arrayMensajeClaroConvertido);
+
+            Console.Write("Ingrese los siguientes datos:\n");
+            Console.WriteLine("Ingresar la llave: ");
+            Llave = Console.ReadLine();
+            if (Llave == null || Llave == "")
+            {
+                throw new Exception("Ingrese una llave valida");
+            }
+            else if (Llave.Length < 3)
+            {
+                throw new Exception("Ingrese una llave con extension valida");
+            }
+            //Console.WriteLine("La llave es la siguiente:\n");
+
+            DevolverArreglosEquivalenciaLlave(Llave); //guarda y convierte el arreglo
+            /*ImprimirArreglo3x1A(GlobalData.arrayLlaveOriginal);
+            ImprimirArreglo3x1A(GlobalData.arrayLlaveOriginal2);
+
+            Console.WriteLine("La llave convertida es la siguiente:\n");
+            ImprimirArreglo3x1(GlobalData.arrayLlaveConvertida1);
+            Console.WriteLine();
+            ImprimirArreglo3x1(GlobalData.arrayLlaveConvertida2);*/
+
+            Paso4pt();
+            //imprimirPaso4();
+            ImprimirCifrado();
+
+            Console.Write("Presiona <Enter> para regresar al menú... ");
+            if (Console.ReadKey().Key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                Opcion8();
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            MostrarMenu();
+        }
+    }
+}
+
 void Opcion10()
 {
     try
     {
         MostrarIdioma();
-        //bool ExisteMsjClaro = true;
-        //bool ExisteLlave = true;
         DevolverArregloEquivalencia("guadalupe"); //guarda y convierte el arreglo
         DevolverArreglosEquivalenciaLlave("laredo"); //guarda y convierte el arreglo
 
+        Console.Write("Precargando ejemplo: \nMensaje: laredo \nLlave: guadalupe\n");
         Console.Write("Presiona <Enter> para regresar al menú... ");
         if (Console.ReadKey().Key == ConsoleKey.Enter)
         {
@@ -434,11 +534,11 @@ void Opcion11()
     try
     {
         MostrarIdioma();
-        //bool ExisteMsjClaro = true;
-        //bool ExisteLlave = true;
         DevolverArregloEquivalencia("guadalupe"); //guarda y convierte el arreglo
         DevolverArreglosEquivalenciaLlave("centro"); //guarda y convierte el arreglo
 
+        Console.Write("Precargando ejemplo: \nMensaje: centro \nLlave: guadalupe\n");
+       
         Console.Write("Presiona <Enter> para regresar al menú... ");
         if (Console.ReadKey().Key == ConsoleKey.Enter)
         {
@@ -457,7 +557,8 @@ void Opcion12()
     try
     {
         MostrarIdioma();
-        ExisteMsjClaro = false;
+        BorrarDatos();
+        /*ExisteMsjClaro = false;
         ExisteLlave = false;
 
         int[] arrayVacioInt = new int[3];
@@ -478,19 +579,7 @@ void Opcion12()
         GlobalData.arrayEquivalenciaFinal2 = arrayVacioInt;
         GlobalData.arrayMensajeClaroConvertido = arrayVacioInt9;
 
-        /*
-        public static char[] arrayMensajeClaroOriginal2;    //arreglo de chars del mensaje claro
-        public static int[] arrayMensajeClaroConvertido;    //arreglo convertido a numeros del mensaje claro   
-        public static char[] arrayLlaveOriginal;            //pt1 del arreglo de chars de la llave
-        public static char[] arrayLlaveOriginal2;           //pt2 del arreglo de chars de la llave
-        public static int[] arrayLlaveConvertida1;          //pt1 del arreglo de enteros de la llave
-        public static int[] arrayLlaveConvertida2;          //pt2 del arreglo de enteros de la llave
-        public static int[] arrayMultideM1;                //sumatoria de la multiplicacion de M1 * K
-        public static int[] arrayMultideM2;                //sumatoria de la multiplicacion de M2 * K
-        public static int[] arrayEquivalenciaFinal1, arrayEquivalenciaFinal2;
-        public static char[] arrayResultadoFinal1, arrayResultadoFinal2;
-         */
-        Console.Write("Datos borrados satisfactoriamente ");
+        Console.Write("Datos borrados satisfactoriamente \n");*/
 
         Console.Write("Presiona <Enter> para regresar al menú... ");
         if (Console.ReadKey().Key == ConsoleKey.Enter)
@@ -533,7 +622,7 @@ void DevolverArreglosEquivalenciaLlave(string Cadena)
 
     if (largoCadena != 6)
     {
-        throw new Exception("Largo de la llave no soportada");
+        throw new Exception("Largo de la llave no soportada\n");
     }
     else
     {
@@ -874,6 +963,32 @@ void MostrarIdioma()
         Console.WriteLine("Idioma Actual: Ingles");
         Console.WriteLine("////////////////////////////////////////////////////////////\n");
     }
+}
+
+void BorrarDatos()
+{
+    ExisteMsjClaro = false;
+    ExisteLlave = false;
+
+    int[] arrayVacioInt = new int[3];
+    int[] arrayVacioInt9 = new int[9];
+    char[] arrayVacioChar = new char[3];
+    char[] arrayVacioChar9 = new char[9];
+    GlobalData.arrayResultadoFinal1 = arrayVacioChar;
+    GlobalData.arrayResultadoFinal2 = arrayVacioChar;
+    GlobalData.arrayLlaveOriginal = arrayVacioChar;
+    GlobalData.arrayLlaveOriginal2 = arrayVacioChar;
+    GlobalData.arrayMensajeClaroOriginal2 = arrayVacioChar9;
+
+    GlobalData.arrayMultideM2 = arrayVacioInt;
+    GlobalData.arrayMultideM1 = arrayVacioInt;
+    GlobalData.arrayLlaveConvertida2 = arrayVacioInt;
+    GlobalData.arrayLlaveConvertida1 = arrayVacioInt;
+    GlobalData.arrayEquivalenciaFinal1 = arrayVacioInt;
+    GlobalData.arrayEquivalenciaFinal2 = arrayVacioInt;
+    GlobalData.arrayMensajeClaroConvertido = arrayVacioInt9;
+
+    Console.Write("Datos borrados satisfactoriamente \n");
 }
 
 //Datos globales en los arreglos
