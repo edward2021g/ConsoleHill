@@ -16,10 +16,11 @@ char[] AlfabetoIngles = new[]
         };
 bool EsEnEspañol = true;
 bool ExisteMsjClaro = false;
+bool ExisteLlave = false;
 
 //Mas variables
 string MsjClaro, Llave;
-int largoMsjClaro, LargoLlave;
+//int largoMsjClaro, LargoLlave;
 bool salir = false;
 
 //char[] arrayMensajeClaroOriginal;
@@ -67,10 +68,12 @@ void MostrarMenu()
             case 4:
                 Console.Clear();
                 Console.WriteLine("Ingresar Llave");
+                Opcion4();
                 break;
             case 5:
                 Console.Clear();
                 Console.WriteLine("Mostrar Llave");
+                Opcion5();
                 break;
             case 6:
                 Console.Clear();
@@ -169,7 +172,7 @@ void Opcion2()
         Console.WriteLine("El mensaje claro es el siguiente:\n");
 
         DevolverArregloEquivalencia(MsjClaro); //guarda y convierte el arreglo
-        ImprimirArregloChar(GlobalData.arrayMensajeClaroOriginal);
+        ImprimirArregloChar(GlobalData.arrayMensajeClaroOriginal2);
 
         Console.WriteLine("El mensaje claro convertido es el siguiente:\n");
         ImprimirArreglo(GlobalData.arrayMensajeClaroConvertido);
@@ -202,7 +205,7 @@ void Opcion3()
             Console.WriteLine("El mensaje claro es el siguiente:\n");
 
             //DevolverArregloEquivalencia(MsjClaro); //guarda y convierte el arreglo
-            ImprimirArregloChar(GlobalData.arrayMensajeClaroOriginal);
+            ImprimirArregloChar(GlobalData.arrayMensajeClaroOriginal2);
 
             Console.WriteLine("El mensaje claro convertido es el siguiente:\n");
             ImprimirArreglo(GlobalData.arrayMensajeClaroConvertido);
@@ -230,17 +233,109 @@ void Opcion3()
         }
     }
 }
-/*
-Console.WriteLine("Ingrese el mensaje claro:");
-Console.Write("\n");
-MsjClaro = Console.ReadLine();
-if (MsjClaro == null || MsjClaro == "" ) {
-    return;
+
+void Opcion4()
+{
+    try
+    {
+        MostrarIdioma();
+        Console.WriteLine("Ingresar la llave: ");
+        Llave = Console.ReadLine();
+        if (Llave == null || Llave == "")
+        {
+            throw new Exception("Ingrese una llave valida");
+        }
+        else if (Llave.Length < 3)
+        {
+            throw new Exception("Ingrese una llave con extension valida");
+        }
+        Console.WriteLine("La llave es la siguiente:\n");
+
+        DevolverArreglosEquivalenciaLlave(Llave); //guarda y convierte el arreglo
+        ImprimirArreglo3x1A(GlobalData.arrayLlaveOriginal);
+        ImprimirArreglo3x1A(GlobalData.arrayLlaveOriginal2);
+
+        Console.WriteLine("La llave convertida es la siguiente:\n");
+        ImprimirArreglo3x1(GlobalData.arrayLlaveConvertida1);
+        Console.WriteLine();
+        ImprimirArreglo3x1(GlobalData.arrayLlaveConvertida2);
+
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            Console.Clear();
+            MostrarMenu();
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+        Console.Write("Presiona <Enter> para intentar nuevamente... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            Opcion4();
+        }
+    }
 }
-Console.Write("\n");
 
-DevolverArregloEquivalencia(MsjClaro);
+void Opcion5()
+{
+    try
+    {
+        if (ExisteLlave)
+        {
+            MostrarIdioma();
+            Console.WriteLine("La llave es la siguiente:\n");
 
+            //DevolverArreglosEquivalenciaLlave(Llave); //guarda y convierte el arreglo
+            ImprimirArreglo3x1A(GlobalData.arrayLlaveOriginal);
+            ImprimirArreglo3x1A(GlobalData.arrayLlaveOriginal2);
+
+            Console.WriteLine("La llave convertida es la siguiente:\n");
+            ImprimirArreglo3x1(GlobalData.arrayLlaveConvertida1);
+            Console.WriteLine();
+            ImprimirArreglo3x1(GlobalData.arrayLlaveConvertida2);
+
+            Console.Write("Presiona <Enter> para regresar al menú... ");
+            if (Console.ReadKey().Key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                MostrarMenu();
+            }
+        }
+        else
+        {
+            throw new Exception("No existe una llave previa");
+        }
+
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            MostrarMenu();
+        }
+    }
+}
+
+void Opcion6()
+{
+    try
+    {
+
+    }catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            MostrarMenu();
+        }
+    }
+}
+/*
 
 Console.WriteLine("Ingrese la llave:");
 Console.Write("\n");
@@ -255,13 +350,13 @@ Console.WriteLine("La llave es: " + Llave + "\nTiene una longitud de: " + LargoL
 // Metodos auxiliares
 
 //Recibe una cadena, la convierte en una matriz en su equivalencia
-//Nota: deberia funcionar tanto para mensaje claro como para la llave
+//Nota: Funciona solo para mensaje claro 
 void DevolverArregloEquivalencia(string Cadena)
 {
     char[] ch_Cadena = Cadena.ToCharArray();
     int largoCadena = ch_Cadena.Length;
     int[] arrayEquivalente = new int[largoCadena];
-    GlobalData.arrayMensajeClaroOriginal = ch_Cadena; //guarda el mensaje claro original en una variable global
+    GlobalData.arrayMensajeClaroOriginal2 = ch_Cadena; //guarda el mensaje claro original en una variable global
     ExisteMsjClaro = true;
 
     for (int i = 0; i < arrayEquivalente.Length; i++)
@@ -274,11 +369,60 @@ void DevolverArregloEquivalencia(string Cadena)
     //ImprimirArreglo(arrayEquivalente);
 }
 
-//Imprime el mensaje calro
-//Nota: solo para msj claro
+//Recibe una cadena, la convierte en una o varias matrices en su equivalencia
+//Nota: Funciona solo para mensaje claro 
+void DevolverArreglosEquivalenciaLlave(string Cadena)
+{
+    char[] ch_Cadena = Cadena.ToCharArray();
+    int largoCadena = ch_Cadena.Length;
+
+    if (largoCadena != 6)
+    {
+        throw new Exception("Largo de la llave no soportada");
+    }
+    else
+    {
+        char[] arrayOriginal1 = new char[3];
+        char[] arrayOriginal2 = new char[3];
+        int[] arrayEquivalente1 = new int[3];
+        int[] arrayEquivalente2 = new int[3];
+        //GlobalData.arrayMensajeClaroOriginal = ch_Cadena; 
+        //guarda el mensaje claro original en una variable global
+        for (int i = 0; i < 3; i++)
+        {
+            //GlobalData.arrayLlaveOriginal[i] = ch_Cadena[i];
+            arrayOriginal1[i] = ch_Cadena[i];
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            //GlobalData.arrayLlaveOriginal2[i] = ch_Cadena[i+3];
+            arrayOriginal2[i] = ch_Cadena[i+3];
+        }
+        GlobalData.arrayLlaveOriginal = arrayOriginal1;
+        GlobalData.arrayLlaveOriginal2 = arrayOriginal2;
+        ExisteLlave = true; //bandera para poder saber si existe una llave
+
+        for (int i = 0; i < 3; i++)
+        {
+            arrayEquivalente1[i] = DevolverIndiceAlfabeto(ch_Cadena[i]);
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            arrayEquivalente2[i] = DevolverIndiceAlfabeto(ch_Cadena[i+3]);
+        }
+
+        //return arrayEquivalente;
+        GlobalData.arrayLlaveConvertida1 = arrayEquivalente1; //guarda la llave pt1 convertido en una variable global
+        GlobalData.arrayLlaveConvertida2 = arrayEquivalente2; //guarda la llave pt1 convertido en una variable global
+    }
+}
+
+//Imprime el mensaje claro
+//Nota: Funciona solo para mensaje claro 
 void DevolverArregloMensajeClaro()
 {
-    ImprimirArregloChar(GlobalData.arrayMensajeClaroOriginal);
+    ImprimirArregloChar(GlobalData.arrayMensajeClaroOriginal2);
 }
 
 //recibe un caracter, lo busca en el alfabeto y devuelve su posicion (equivalencia)
@@ -287,13 +431,27 @@ int DevolverIndiceAlfabeto(char charLetra)
 {
     int intValor = 0;
 
-    for (int i = 0; i < AlfabetoEsp.Length; i++)
+    if (EsEnEspañol)
     {
-        if (charLetra == AlfabetoEsp[i])
+        for (int i = 0; i < AlfabetoEsp.Length; i++)
         {
-            intValor = i;
+            if (charLetra == AlfabetoEsp[i])
+            {
+                intValor = i;
+            }
         }
     }
+    else
+    {
+        for (int i = 0; i < AlfabetoIngles.Length; i++)
+        {
+            if (charLetra == AlfabetoIngles[i])
+            {
+                intValor = i;
+            }
+        }
+    }
+        
     return (intValor);
 }
 
@@ -315,6 +473,50 @@ void ImprimirArreglo(int[] Arreglo)
         }
     }
     Console.WriteLine(l1 + "\t]\n" + l2 + "\t]\n" + l3 + "\t]\n");
+}
+
+//Imprime el arreglo que le mandemos (Funciona solo para llave)
+void ImprimirArreglo3x1(int[] Arreglo)
+{
+    string l1 = "", l2 = "[", l3 = "[";
+    for (int i = 0; i < Arreglo.Length; i++)
+    {
+        if (i == 0)
+        {
+            l1 = "[" + Arreglo[i].ToString() + "]\n";
+        }
+        else if (i == 1)
+        {
+            l2 = "[" + Arreglo[i].ToString() + "]\n";
+        }
+        else if (i == 2)
+        {
+            l3 = "[" + Arreglo[i].ToString() + "]\n";
+        }
+    }
+    Console.WriteLine(l1 + l2 + l3 + "\n");
+}
+
+//Imprime el arreglo que le mandemos (Funciona solo para llave)
+void ImprimirArreglo3x1A(char[] Arreglo)
+{
+    string l1 = "", l2 = "[", l3 = "[";
+    for (int i = 0; i < Arreglo.Length; i++)
+    {
+        if (i == 0)
+        {
+            l1 = "[" + Arreglo[i].ToString() + "]\n";
+        }
+        else if (i == 1)
+        {
+            l2 = "[" + Arreglo[i].ToString() + "]\n";
+        }
+        else if (i == 2)
+        {
+            l3 = "[" + Arreglo[i].ToString() + "]\n";
+        }
+    }
+    Console.WriteLine(l1 + l2 + l3 + "\n");
 }
 
 //Imprime el arreglo que le mandemos (Funciona de momento solo para mensaje claro)
@@ -339,6 +541,7 @@ void ImprimirArregloChar(char[] Arreglo)
     Console.WriteLine(l1 + "\t]\n" + l2 + "\t]\n" + l3 + "\t]\n");
 }
 
+//Encabezado que se muestra a lo largo del programa para dar informacion del idioma actual
 void MostrarIdioma()
 {
    if (EsEnEspañol) {
@@ -359,6 +562,10 @@ void MostrarIdioma()
 //Datos globales en los arreglos
 public static class GlobalData
 {
-    public static char[] arrayMensajeClaroOriginal;
+    public static char[] arrayMensajeClaroOriginal2;
     public static int[] arrayMensajeClaroConvertido;
+    public static char[] arrayLlaveOriginal;
+    public static char[] arrayLlaveOriginal2;
+    public static int[] arrayLlaveConvertida1;
+    public static int[] arrayLlaveConvertida2;
 };
