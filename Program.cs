@@ -19,31 +19,28 @@ bool ExisteMsjClaro = false;
 bool ExisteLlave = false;
 
 //Mas variables
-string MsjClaro, Llave;
-//int largoMsjClaro, LargoLlave;
+string MsjClaro, Llave; //Variables para recibir lo que se ingrese
 bool salir = false;
-
-//char[] arrayMensajeClaroOriginal;
-//int[] arrayMensajeClaroConvertido;
-
 
 void MostrarMenu()
 {
     try
     {
         MostrarIdioma();
-        Console.WriteLine("1.- Configuracion de Idioma");
+        Console.WriteLine("1.- Configuracion de Idioma\n");
+        //Console.WriteLine("////////////////////////////////////////////////////////////\n")
         Console.WriteLine("2.- Ingresar Mensaje claro");
-        Console.WriteLine("3.- Mostrar Mensaje claro");
+        Console.WriteLine("3.- Mostrar Mensaje claro\n");
         Console.WriteLine("4.- Ingresar Llave");
-        Console.WriteLine("5.- Mostrar Llave");
+        Console.WriteLine("5.- Mostrar Llave\n");
         Console.WriteLine("6.- Mostrar Resultado");
-        Console.WriteLine("7.- Mostrar Procedimiento completo");
+        Console.WriteLine("7.- Mostrar Procedimiento completo\n");
         Console.WriteLine("8.- Iniciar version sencilla");
-        Console.WriteLine("9.- Iniciar version detallada");
-        Console.WriteLine("9.- Borrar datos almacenados");
-        Console.WriteLine("10.- Precargar ejemplo");
-        Console.WriteLine("11.- Salir");
+        Console.WriteLine("9.- Iniciar version detallada\n");
+        Console.WriteLine("10.- Precargar ejemplo: \tMensaje:laredo \tLlave: guadalupe");
+        Console.WriteLine("11.- Precargar ejemplo: \tMensaje:centro \tLlave: guadalupe\n");
+        Console.WriteLine("12.- Borrar datos almacenados\n");
+        Console.WriteLine("13.- Salir\n");
         Console.WriteLine("Elige una de las opciones");
         int opcion = Convert.ToInt32(Console.ReadLine());
 
@@ -96,10 +93,20 @@ void MostrarMenu()
                 break;
             case 10:
                 Console.Clear();
-                Console.WriteLine("Precargando ejemplo: \nMensaje:guadalupe \nLlave: laredo");
+                Console.WriteLine("Precargando ejemplo: \nMensaje:laredo \nLlave: guadalupe");
                 Opcion10();
                 break;
             case 11:
+                Console.Clear();
+                Console.WriteLine("Precargando ejemplo: \nMensaje: centro \nLlave: guadalupe");
+                Opcion11();
+                break;
+            case 12:
+                Console.Clear();
+                Console.WriteLine("Borrar datos almacenados");
+                Opcion12();
+                break;
+            case 13:
                 Console.Clear();
                 Console.WriteLine("Has elegido salir de la aplicación");
                 salir = true;
@@ -335,6 +342,7 @@ void Opcion6()
     {
         if(ExisteLlave && ExisteMsjClaro)
         {
+            MostrarIdioma();
             Paso4pt();
             //imprimirPaso4();
             ImprimirCifrado();
@@ -369,8 +377,10 @@ void Opcion7()
     {
         if (ExisteLlave && ExisteMsjClaro)
         {
+            MostrarIdioma();
             Paso4pt();
             imprimirPaso4();
+            ImprimirCifrado();
 
             Console.Write("Presiona <Enter> para regresar al menú... ");
             if (Console.ReadKey().Key == ConsoleKey.Enter)
@@ -400,8 +410,9 @@ void Opcion10()
 {
     try
     {
-        bool ExisteMsjClaro = true;
-        bool ExisteLlave = true;
+        MostrarIdioma();
+        //bool ExisteMsjClaro = true;
+        //bool ExisteLlave = true;
         DevolverArregloEquivalencia("guadalupe"); //guarda y convierte el arreglo
         DevolverArreglosEquivalenciaLlave("laredo"); //guarda y convierte el arreglo
 
@@ -418,6 +429,81 @@ void Opcion10()
     }
 }
 
+void Opcion11()
+{
+    try
+    {
+        MostrarIdioma();
+        //bool ExisteMsjClaro = true;
+        //bool ExisteLlave = true;
+        DevolverArregloEquivalencia("guadalupe"); //guarda y convierte el arreglo
+        DevolverArreglosEquivalenciaLlave("centro"); //guarda y convierte el arreglo
+
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            Console.Clear();
+            MostrarMenu();
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+    }
+}
+
+void Opcion12()
+{
+    try
+    {
+        MostrarIdioma();
+        ExisteMsjClaro = false;
+        ExisteLlave = false;
+
+        int[] arrayVacioInt = new int[3];
+        int[] arrayVacioInt9 = new int[9];
+        char[] arrayVacioChar = new char[3];
+        char[] arrayVacioChar9 = new char[9];
+        GlobalData.arrayResultadoFinal1 = arrayVacioChar;
+        GlobalData.arrayResultadoFinal2 = arrayVacioChar;
+        GlobalData.arrayLlaveOriginal = arrayVacioChar;
+        GlobalData.arrayLlaveOriginal2 = arrayVacioChar;
+        GlobalData.arrayMensajeClaroOriginal2 = arrayVacioChar9;
+
+        GlobalData.arrayMultideM2 = arrayVacioInt;
+        GlobalData.arrayMultideM1 = arrayVacioInt;
+        GlobalData.arrayLlaveConvertida2 = arrayVacioInt;
+        GlobalData.arrayLlaveConvertida1 = arrayVacioInt;
+        GlobalData.arrayEquivalenciaFinal1 = arrayVacioInt;
+        GlobalData.arrayEquivalenciaFinal2 = arrayVacioInt;
+        GlobalData.arrayMensajeClaroConvertido = arrayVacioInt9;
+
+        /*
+        public static char[] arrayMensajeClaroOriginal2;    //arreglo de chars del mensaje claro
+        public static int[] arrayMensajeClaroConvertido;    //arreglo convertido a numeros del mensaje claro   
+        public static char[] arrayLlaveOriginal;            //pt1 del arreglo de chars de la llave
+        public static char[] arrayLlaveOriginal2;           //pt2 del arreglo de chars de la llave
+        public static int[] arrayLlaveConvertida1;          //pt1 del arreglo de enteros de la llave
+        public static int[] arrayLlaveConvertida2;          //pt2 del arreglo de enteros de la llave
+        public static int[] arrayMultideM1;                //sumatoria de la multiplicacion de M1 * K
+        public static int[] arrayMultideM2;                //sumatoria de la multiplicacion de M2 * K
+        public static int[] arrayEquivalenciaFinal1, arrayEquivalenciaFinal2;
+        public static char[] arrayResultadoFinal1, arrayResultadoFinal2;
+         */
+        Console.Write("Datos borrados satisfactoriamente ");
+
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            Console.Clear();
+            MostrarMenu();
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+    }
+}
 // Metodos auxiliares
 
 //Recibe una cadena, la convierte en una matriz en su equivalencia
@@ -434,10 +520,8 @@ void DevolverArregloEquivalencia(string Cadena)
     {
         arrayEquivalente[i] = DevolverIndiceAlfabeto(ch_Cadena[i]);
     }
-
-    //return arrayEquivalente;
+;
     GlobalData.arrayMensajeClaroConvertido = arrayEquivalente; //guarda el mensaje claro convertido en una variable global
-    //ImprimirArreglo(arrayEquivalente);
 }
 
 //Recibe una cadena, la convierte en una o varias matrices en su equivalencia
@@ -457,16 +541,14 @@ void DevolverArreglosEquivalenciaLlave(string Cadena)
         char[] arrayOriginal2 = new char[3];
         int[] arrayEquivalente1 = new int[3];
         int[] arrayEquivalente2 = new int[3];
-        //GlobalData.arrayMensajeClaroOriginal = ch_Cadena; 
+         
         //guarda el mensaje claro original en una variable global
         for (int i = 0; i < 3; i++)
         {
-            //GlobalData.arrayLlaveOriginal[i] = ch_Cadena[i];
             arrayOriginal1[i] = ch_Cadena[i];
         }
         for (int i = 0; i < 3; i++)
         {
-            //GlobalData.arrayLlaveOriginal2[i] = ch_Cadena[i+3];
             arrayOriginal2[i] = ch_Cadena[i+3];
         }
         GlobalData.arrayLlaveOriginal = arrayOriginal1;
@@ -483,7 +565,6 @@ void DevolverArreglosEquivalenciaLlave(string Cadena)
             arrayEquivalente2[i] = DevolverIndiceAlfabeto(ch_Cadena[i+3]);
         }
 
-        //return arrayEquivalente;
         GlobalData.arrayLlaveConvertida1 = arrayEquivalente1; //guarda la llave pt1 convertido en una variable global
         GlobalData.arrayLlaveConvertida2 = arrayEquivalente2; //guarda la llave pt1 convertido en una variable global
     }
@@ -702,14 +783,7 @@ void Paso4pt()
     }
     int[] arrayMultideM22 = new[] { b1, b2, b3 };
     GlobalData.arrayMultideM2 = arrayMultideM22;
-}
 
-void imprimirPaso4()
-{
-    Console.WriteLine("La siguiente matriz representa las sumatorias de la multiplicacion por M1:\n");
-    ImprimirArreglo3x1(GlobalData.arrayMultideM1);
-    Console.WriteLine("La siguiente matriz representa las sumatorias de la multiplicacion por M2:\n");
-    ImprimirArreglo3x1(GlobalData.arrayMultideM2);
     int cantaidadDeLetras;
     if (EsEnEspañol)
     {
@@ -734,25 +808,36 @@ void imprimirPaso4()
 
     GlobalData.arrayEquivalenciaFinal1 = arrayFinal1; //guardo en variables globales
     GlobalData.arrayEquivalenciaFinal2 = arrayFinal2; //guardo en variables globales
-    ImprimirCifrado();
-    /*
+
+    GlobalData.arrayResultadoFinal1 = GlobalData.arrayLlaveOriginal;    //inicializo los array aqui
+    GlobalData.arrayResultadoFinal2 = GlobalData.arrayLlaveOriginal2;   //inicializo los array aqui
+
+    for (int i = 0;i < GlobalData.arrayEquivalenciaFinal1.Length; i++)
+    {
+        string varlor_i = DevolverLetra(GlobalData.arrayEquivalenciaFinal1[i]);
+        GlobalData.arrayResultadoFinal1[i] = char.Parse(varlor_i);
+    }
+    for (int i = 0; i < GlobalData.arrayEquivalenciaFinal2.Length; i++)
+    {
+        string varlor_i = DevolverLetra(GlobalData.arrayEquivalenciaFinal2[i]);
+        GlobalData.arrayResultadoFinal2[i] = char.Parse(varlor_i);
+    }
+}
+
+void imprimirPaso4()
+{
+    Console.WriteLine("La siguiente matriz representa las sumatorias de la multiplicacion por M1:\n");
+    ImprimirArreglo3x1(GlobalData.arrayMultideM1);
+    Console.WriteLine("La siguiente matriz representa las sumatorias de la multiplicacion por M2:\n");
+    ImprimirArreglo3x1(GlobalData.arrayMultideM2);
+
+    Console.WriteLine("Se le aplica el mod correspondiente a las matrices:\n");
+    ImprimirArreglo3x1(GlobalData.arrayEquivalenciaFinal1);
+    ImprimirArreglo3x1(GlobalData.arrayEquivalenciaFinal2);
+
     Console.WriteLine("La siguiente matriz representa el resultado final:\n");
-    ImprimirArreglo3x1(arrayFinal1);
-    ImprimirArreglo3x1(arrayFinal2);
-    
-    string strCodigo = "";
-    Console.WriteLine("El codigo es el siguiente:\n");
-    foreach(int i in arrayFinal1)
-    {
-        string varlor_i = DevolverLetra(i);
-        strCodigo = strCodigo + varlor_i;
-    }
-    foreach (int i in arrayFinal2)
-    {
-        string varlor_i = DevolverLetra(i);
-        strCodigo = strCodigo + varlor_i;
-    }
-    Console.WriteLine(strCodigo);*/
+    ImprimirArreglo3x1A(GlobalData.arrayResultadoFinal1);
+    ImprimirArreglo3x1A(GlobalData.arrayResultadoFinal2);
 }
 
 void ImprimirCifrado()
