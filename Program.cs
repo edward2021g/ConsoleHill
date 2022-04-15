@@ -91,6 +91,7 @@ void MostrarMenu()
             case 9:
                 Console.Clear();
                 Console.WriteLine("Iniciar version detallada");
+                Opcion9();
                 break;
             case 10:
                 Console.Clear();
@@ -486,6 +487,91 @@ void Opcion8()
 
             Paso4pt();
             //imprimirPaso4();
+            ImprimirCifrado();
+
+            Console.Write("Presiona <Enter> para regresar al menú... ");
+            if (Console.ReadKey().Key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                Opcion8();
+            }
+        }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+        Console.Write("Presiona <Enter> para regresar al menú... ");
+        if (Console.ReadKey().Key == ConsoleKey.Enter)
+        {
+            MostrarMenu();
+        }
+    }
+}
+
+void Opcion9()
+{
+    try
+    {
+        if (ExisteLlave && ExisteMsjClaro)
+        {
+            MostrarIdioma();
+            Paso4pt();
+            imprimirPaso4();
+            ImprimirCifrado();
+
+            Console.Write("Presiona <Enter> para regresar al menú... ");
+            if (Console.ReadKey().Key == ConsoleKey.Enter)
+            {
+                Console.Clear();
+                MostrarMenu();
+            }
+        }
+        else
+        {
+            MostrarIdioma();
+
+            Console.WriteLine("Ingresar Mensaje claro: ");
+            MsjClaro = Console.ReadLine();
+            if (MsjClaro == null || MsjClaro == "")
+            {
+                throw new Exception("Ingrese un mensaje valido");
+            }
+            else if (MsjClaro.Length != 9)
+            {
+                throw new Exception("Ingrese un mensaje con extension valida");
+            }
+            Console.WriteLine("El mensaje claro es el siguiente:\n");
+
+            DevolverArregloEquivalencia(MsjClaro); //guarda y convierte el arreglo
+            ImprimirArregloChar(GlobalData.arrayMensajeClaroOriginal2);
+
+            Console.WriteLine("El mensaje claro convertido es el siguiente:\n");
+            ImprimirArreglo(GlobalData.arrayMensajeClaroConvertido);
+
+            Console.Write("Ingrese los siguientes datos:\n");
+            Console.WriteLine("Ingresar la llave: ");
+            Llave = Console.ReadLine();
+            if (Llave == null || Llave == "")
+            {
+                throw new Exception("Ingrese una llave valida");
+            }
+            else if (Llave.Length < 3)
+            {
+                throw new Exception("Ingrese una llave con extension valida");
+            }
+            Console.WriteLine("La llave es la siguiente:\n");
+
+            DevolverArreglosEquivalenciaLlave(Llave); //guarda y convierte el arreglo
+            ImprimirArreglo3x1A(GlobalData.arrayLlaveOriginal);
+            ImprimirArreglo3x1A(GlobalData.arrayLlaveOriginal2);
+
+            Console.WriteLine("La llave convertida es la siguiente:\n");
+            ImprimirArreglo3x1(GlobalData.arrayLlaveConvertida1);
+            Console.WriteLine();
+            ImprimirArreglo3x1(GlobalData.arrayLlaveConvertida2);
+
+            Paso4pt();
+            imprimirPaso4();
             ImprimirCifrado();
 
             Console.Write("Presiona <Enter> para regresar al menú... ");
