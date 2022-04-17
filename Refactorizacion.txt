@@ -1,0 +1,22 @@
+//Variables cambiadas de nombre
+MsjClaro -> MsjLlave
+Llave -> MsjClaro
+ExisteMsjClaro -> ExistLlave
+ExisteLlave -> ExistMsjClaro
+
+//Arreglos cambiados de nombre
+arrayMensajeClaroOriginal2 -> arrayLlaveOrig
+arrayMensajeClaroConvertido -> arrayLlaveConvert
+arrayLlaveOriginal -> arrayMsjClaroOrig1
+arrayLlaveOriginal2 -> arrayMsjClaroOrig2
+arrayLlaveConvertida1 -> arrayMsjClaroConvert1
+arrayLlaveConvertida2 -> arrayMsjClaroConvert2
+
+//Metodos
+DevolverArreglosEquivalenciaLlave -> DevolverArraysEquivMsjClaro 
+DevolverArregloEquivalencia -> DevolverArregloEquivalenciaLlave
+ImprimirArreglo -> ImprimirArreglo3x3Int
+ImprimirArreglo3x1 -> ImprimirArreglo3x1Int
+ImprimirArreglo3x1A -> ImprimirArreglo3x1Char
+ImprimirArregloChar -> ImprimirArreglo3x3Char 
+Paso4pt -> Paso4
