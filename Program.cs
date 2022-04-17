@@ -147,7 +147,6 @@ void Opcion1()
                 EsEnEspañol = true;
                 Console.WriteLine("Idioma Español");
                 BorrarDatos(); //borra los datos al cambiar de idioma
-                //MostrarMenu();
                 break;
 
             case 2:
@@ -155,7 +154,6 @@ void Opcion1()
                 EsEnEspañol = false;
                 Console.WriteLine("Idioma Ingles");
                 BorrarDatos(); //borra los datos al cambiar de idioma
-                //MostrarMenu();
                 break;
 
             case 3:
@@ -194,6 +192,8 @@ void Opcion2()
         MostrarIdioma();
         Console.WriteLine("Ingresar Llave: ");
         MsjLlave = Console.ReadLine();
+
+
         if (MsjLlave == null || MsjLlave == "")
         {
             throw new Exception("Ingrese un mensaje valido");
@@ -219,12 +219,14 @@ void Opcion2()
     }
     catch (Exception ex)
     {
+        Console.Write("Presiona <Enter> para regresar al menú... \n");
         Console.WriteLine(ex.ToString());
-        Console.Write("Presiona <Enter> para intentar nuevamente... ");
+
         if (Console.ReadKey().Key == ConsoleKey.Enter)
         {
-            Opcion2();
-        }
+            Console.Clear();
+            MostrarMenu();
+        } 
     }
 }
 
@@ -300,11 +302,13 @@ void Opcion4()
     }
     catch (Exception ex)
     {
+        Console.Write("Presiona <Enter> para regresar al menú... \n");
         Console.WriteLine(ex.ToString());
-        Console.Write("Presiona <Enter> para intentar nuevamente... ");
+
         if (Console.ReadKey().Key == ConsoleKey.Enter)
         {
-            Opcion4();
+            Console.Clear();
+            MostrarMenu();
         }
     }
 }
@@ -318,7 +322,6 @@ void Opcion5()
             MostrarIdioma();
             Console.WriteLine("El Mensaje en Claro es el siguiente:\n");
 
-            //DevolverArreglosEquivalenciaLlave(Llave); //guarda y convierte el arreglo
             ImprimirArreglo3x1Char(GlobalData.arrayMsjClaroOrig1);
             ImprimirArreglo3x1Char(GlobalData.arrayMsjClaroOrig2);
 
@@ -393,6 +396,7 @@ void Opcion7()
         {
             MostrarIdioma();
             Paso4();
+            imprimirPaso2y3();
             imprimirPaso4();
             ImprimirCifrado();
 
@@ -498,6 +502,7 @@ void Opcion9()
         {
             MostrarIdioma();
             Paso4();
+            imprimirPaso2y3();
             imprimirPaso4();
             ImprimirCifrado();
 
@@ -959,6 +964,25 @@ void Paso4()
         string varlor_i = DevolverLetra(GlobalData.arrayEquivalenciaFinal2[i]);
         GlobalData.arrayResultadoFinal2[i] = char.Parse(varlor_i);
     }
+}
+
+void imprimirPaso2y3()
+{
+    Console.WriteLine("La Llave es la siguiente:\n");
+
+    ImprimirArreglo3x3Char(GlobalData.arrayLlaveOrig);
+
+    Console.WriteLine("La llave convertida es la siguiente:\n");
+    ImprimirArreglo3x3Int(GlobalData.arrayLlaveConvert);
+
+    Console.WriteLine("El Mensaje en claro es el siguiente:\n");
+    ImprimirArreglo3x1Char(GlobalData.arrayMsjClaroOrig1);
+    ImprimirArreglo3x1Char(GlobalData.arrayMsjClaroOrig2);
+
+    Console.WriteLine("El Mensaje en claro convertido es el siguiente:\n");
+    ImprimirArreglo3x1Int(GlobalData.arrayMsjClaroConvert1);
+    Console.WriteLine();
+    ImprimirArreglo3x1Int(GlobalData.arrayMsjClaroConvert2);
 }
 
 void imprimirPaso4()
